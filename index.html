@@ -1,0 +1,157 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Assitant -- Your last assistant.</title>
+  <link rel="stylesheet" href="app.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <script>
+    window.CodeMirror = require('codemirror');
+  </script>
+  <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+  <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+</head>
+    <body style="-webkit-app-region: drag">
+        <div id="app">
+          <div class="prompt">></div>
+          <input id="userInput" type="text" placeholder="Type your commands here..." autofocus="true" oninput="debounce(input(this), 250)" onkeyup="keyed(event)">
+          <span class="notification"></span>
+        </div>
+        <div class="conversation"></div>
+
+        <script>
+        var fs = require('fs');
+        function file(aFile) {
+          window.commandHistory.push('file ' + aFile);
+          window.commandHistoryIndex = window.commandHistory.length;
+          return new Promise(function(resolve, reject) {
+            fs.readFile(aFile, 'utf8', function(err, data) {
+                if (err) return reject(err);
+                resolve(data);
+            });
+
+           });
+        }
+
+        function clear() {
+          window.commandHistory.push('clear');
+          window.commandHistoryIndex = window.commandHistory.length;
+          window.myCodeMirror = undefined;
+          document.getElementById('userInput').value = '';
+          document.body.getElementsByClassName('conversation')[0].innerHTML = '';
+        }
+        </script>
+
+        <script>
+
+        // Returns a function, that, as long as it continues to be invoked, will not
+        // be triggered. The function will be called after it stops being called for
+        // N milliseconds. If `immediate` is passed, trigger the function on the
+        // leading edge, instead of the trailing.
+        function debounce(func, wait, immediate) {
+          var timeout;
+          return function() {
+            var context = this, args = arguments;
+            var later = function() {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+          };
+        };
+
+          function input(el) {
+            if (el.value === 'new function') {
+              // var conversation = document.body.getElementsByClassName('conversation')[0];
+              // console.log(conversation);
+              // conversation.innerHTML = 'Card';
+              // var myCodeMirror = CodeMirror(document.body.getElementsByClassName('conversation')[0], {
+              //   value: String(file),
+              //   mode:  "javascript"
+              // });
+            }
+
+            var func = /file (.*)/;
+            var match = func.exec(el.value);
+            if (match !== null) {
+              var key = match[0].split(' ');
+              var fn = key[0];
+              if (fn === 'file') {
+                var filePath = match[1];
+                var promise = file(filePath);
+                var conversation = document.body.getElementsByClassName('conversation')[0];
+                var notification = document.body.getElementsByClassName('notification')[0];
+                promise.then(function(data) {
+                  notification.innerHTML = '';
+                  if (window.myCodeMirror === undefined) {
+                    window.myCodeMirror = CodeMirror(conversation, {
+                      value: data,
+                      mode:  "javascript"
+                    });
+                  } else {
+                    window.myCodeMirror.getDoc().setValue(data)
+                  }
+
+                }).catch(function(err) {
+                  if (err.code === 'ENOENT') {
+                    notification.innerHTML = 'No file found.  Please enter full file path.';
+                  };
+                  console.log(err.code);
+                });
+
+              }
+            };
+          }
+
+          function keyed(event) {
+            var userInput = document.getElementById('userInput').value;
+            var func = /clear/;
+            var match = func.exec(userInput);
+            const ENTER = 13;
+            if (match !== null && match[0] === 'clear' && event.keyCode == ENTER) {
+              clear();
+            }
+          }
+
+          // HISTORY
+          window.commandHistory = [''];
+          window.commandHistoryIndex = 0;
+          document.addEventListener('keydown', function(event) {
+            const UP = 38;
+            const LEFT = 37;
+            const RIGHT = 39;
+            const DOWN = 40;
+            var userInput = document.getElementById('userInput');
+
+              if(event.keyCode == LEFT) {
+                console.log('Left was pressed');
+              }
+
+              if(event.keyCode == RIGHT) {
+                console.log('Right was pressed');
+              }
+
+              if (event.keyCode == UP) {
+                if (window.commandHistoryIndex > 0) {
+                  window.commandHistoryIndex--;
+                }
+                userInput.value = window.commandHistory[window.commandHistoryIndex];
+              }
+
+              if (event.keyCode == DOWN) {
+                if (window.commandHistoryIndex <= window.commandHistory.length) {
+                  window.commandHistoryIndex++;
+                }
+
+                if (window.commandHistory[window.commandHistoryIndex] !== undefined) {
+                  userInput.value = window.commandHistory[window.commandHistoryIndex];
+                } else {
+                  userInput.value = '';
+                }
+
+              }
+          });
+        </script>
+    </body>
+</html>
