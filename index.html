@@ -8,8 +8,10 @@
   </script>
   <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
   <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+  <link rel="import" href="code-mirror.html">
 </head>
     <body style="-webkit-app-region: drag">
+
         <div id="app">
           <div class="prompt">></div>
           <input id="userInput" type="text" placeholder="Type your commands here..." autofocus="true" oninput="debounce(input(this), 250)" onkeyup="keyed(event)">
@@ -153,5 +155,10 @@
               }
           });
         </script>
+        <code-mirror
+        code="function myScript(){return 100;}\n"
+        mode="javascript"
+        theme="elegant"
+        lineNumbers=true></code-mirror>
     </body>
 </html>
