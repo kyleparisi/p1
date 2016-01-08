@@ -20,91 +20,32 @@
         <div class="conversation"></div>
 
         <script>
-        var fs = require('fs');
-        function file(aFile) {
-          window.commandHistory.push('file ' + aFile);
-          window.commandHistoryIndex = window.commandHistory.length;
-          return new Promise(function(resolve, reject) {
-            fs.readFile(aFile, 'utf8', function(err, data) {
-                if (err) return reject(err);
-                resolve(data);
-            });
-
-           });
-        }
-
-        function clear() {
-          window.commandHistory.push('clear');
-          window.commandHistoryIndex = window.commandHistory.length;
-          window.myCodeMirror = undefined;
-          document.getElementById('userInput').value = '';
-          document.body.getElementsByClassName('conversation')[0].innerHTML = '';
-        }
-        </script>
-
-        <script>
-
-        // Returns a function, that, as long as it continues to be invoked, will not
-        // be triggered. The function will be called after it stops being called for
-        // N milliseconds. If `immediate` is passed, trigger the function on the
-        // leading edge, instead of the trailing.
-        function debounce(func, wait, immediate) {
-          var timeout;
-          return function() {
-            var context = this, args = arguments;
-            var later = function() {
-              timeout = null;
-              if (!immediate) func.apply(context, args);
-            };
-            var callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
-          };
-        };
-
-          function input(el) {
-            if (el.value === 'new function') {
-              // var conversation = document.body.getElementsByClassName('conversation')[0];
-              // console.log(conversation);
-              // conversation.innerHTML = 'Card';
-              // var myCodeMirror = CodeMirror(document.body.getElementsByClassName('conversation')[0], {
-              //   value: String(file),
-              //   mode:  "javascript"
-              // });
-            }
-
-            var func = /file (.*)/;
-            var match = func.exec(el.value);
-            if (match !== null) {
-              var key = match[0].split(' ');
-              var fn = key[0];
-              if (fn === 'file') {
-                var filePath = match[1];
-                var promise = file(filePath);
-                var conversation = document.body.getElementsByClassName('conversation')[0];
-                var notification = document.body.getElementsByClassName('notification')[0];
-                promise.then(function(data) {
-                  notification.innerHTML = '';
-                  if (window.myCodeMirror === undefined) {
-                    window.myCodeMirror = CodeMirror(conversation, {
-                      value: data,
-                      mode:  "javascript"
-                    });
-                  } else {
-                    window.myCodeMirror.getDoc().setValue(data)
-                  }
-
-                }).catch(function(err) {
-                  if (err.code === 'ENOENT') {
-                    notification.innerHTML = 'No file found.  Please enter full file path.';
-                  };
-                  console.log(err.code);
-                });
-
-              }
-            };
+          function clear() {
+            window.commandHistory.push('clear');
+            window.commandHistoryIndex = window.commandHistory.length;
+            window.myCodeMirror = undefined;
+            document.getElementById('userInput').value = '';
+            document.body.getElementsByClassName('conversation')[0].innerHTML = '';
           }
+
+          // Returns a function, that, as long as it continues to be invoked, will not
+          // be triggered. The function will be called after it stops being called for
+          // N milliseconds. If `immediate` is passed, trigger the function on the
+          // leading edge, instead of the trailing.
+          function debounce(func, wait, immediate) {
+            var timeout;
+            return function() {
+              var context = this, args = arguments;
+              var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+              };
+              var callNow = immediate && !timeout;
+              clearTimeout(timeout);
+              timeout = setTimeout(later, wait);
+              if (callNow) func.apply(context, args);
+            };
+          };
 
           function keyed(event) {
             var userInput = document.getElementById('userInput').value;
@@ -114,6 +55,13 @@
             if (match !== null && match[0] === 'clear' && event.keyCode == ENTER) {
               clear();
             }
+          }
+        </script>
+
+        <script>
+          var robot = require('./src/robot');
+          function input(el) {
+            robot(el.value);
           }
 
           // HISTORY
@@ -155,10 +103,6 @@
               }
           });
         </script>
-        <code-mirror
-        code="function myScript(){return 100;}\n"
-        mode="javascript"
-        theme="elegant"
-        lineNumbers=true></code-mirror>
+
     </body>
 </html>
