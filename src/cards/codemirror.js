@@ -1,16 +1,13 @@
-module.exports = function (el, data) {
-  var card = document.createElement('div');
-  card.className = "list";
-  var cardContent = document.createElement('div');
-  cardContent.className = "card";
+var base = require('./base')();
 
+module.exports = function (el, data) {
   if (window.myCodeMirror === undefined) {
-    window.myCodeMirror = CodeMirror(cardContent, {
+    window.myCodeMirror = CodeMirror(base.cardContent, {
       value: data,
       mode:  "javascript"
     });
-    card.appendChild(cardContent);
-    el.appendChild(card);
+    base.card.appendChild(base.cardContent);
+    el.appendChild(base.card);
     window.myCodeMirror.refresh();
   } else {
     window.myCodeMirror.getDoc().setValue(data)
