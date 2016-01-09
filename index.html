@@ -17,10 +17,13 @@
           <input id="userInput" type="text" placeholder="Type your commands here..." autofocus="true" oninput="debounce(input(this), 250)" onkeyup="keyed(event)">
           <span class="notification"></span>
         </div>
-        <div class="conversation"></div>
+        <div class="conversation">
+          <div class="list">
+
+          </div>
+        </div>
 
         <script>
-
           // Returns a function, that, as long as it continues to be invoked, will not
           // be triggered. The function will be called after it stops being called for
           // N milliseconds. If `immediate` is passed, trigger the function on the
@@ -39,7 +42,10 @@
               if (callNow) func.apply(context, args);
             };
           };
+        </script>
 
+        <!-- base keyed function -->
+        <script>
           function keyed(event) {
             var userInput = document.getElementById('userInput').value;
             var robot = require('./src/robot');
@@ -47,12 +53,19 @@
           }
         </script>
 
+
+        <!-- base function -->
         <script>
           require('./src/history')();
           var robot = require('./src/robot');
           function input(el) {
             robot(el.value);
           }
+        </script>
+
+        <!-- base cards -->
+        <script>
+
         </script>
 
     </body>

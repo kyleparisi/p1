@@ -1,13 +1,12 @@
-var base = require('./base')();
+var card = require('hyperscript')('.card');
 
 module.exports = function (el, data) {
   if (window.myCodeMirror === undefined) {
-    window.myCodeMirror = CodeMirror(base.cardContent, {
+    window.myCodeMirror = CodeMirror(card, {
       value: data,
       mode:  "javascript"
     });
-    base.card.appendChild(base.cardContent);
-    el.appendChild(base.card);
+    el.appendChild(card);
     window.myCodeMirror.refresh();
   } else {
     window.myCodeMirror.getDoc().setValue(data)
