@@ -20,13 +20,6 @@
         <div class="conversation"></div>
 
         <script>
-          function clear() {
-            window.commandHistory.push('clear');
-            window.commandHistoryIndex = window.commandHistory.length;
-            window.myCodeMirror = undefined;
-            document.getElementById('userInput').value = '';
-            document.body.getElementsByClassName('conversation')[0].innerHTML = '';
-          }
 
           // Returns a function, that, as long as it continues to be invoked, will not
           // be triggered. The function will be called after it stops being called for
@@ -49,12 +42,8 @@
 
           function keyed(event) {
             var userInput = document.getElementById('userInput').value;
-            var func = /clear/;
-            var match = func.exec(userInput);
-            const ENTER = 13;
-            if (match !== null && match[0] === 'clear' && event.keyCode == ENTER) {
-              clear();
-            }
+            var robot = require('./src/robot');
+            robot(userInput, event.keyCode);
           }
         </script>
 
