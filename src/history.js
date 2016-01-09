@@ -16,7 +16,7 @@ module.exports = function() {
       if(event.keyCode == RIGHT) {
         console.log('Right was pressed');
       }
-
+      // console.log(window.commandHistoryIndex);
       if (event.keyCode == UP) {
         if (window.commandHistoryIndex > 0) {
           window.commandHistoryIndex--;
@@ -25,7 +25,7 @@ module.exports = function() {
       }
 
       if (event.keyCode == DOWN) {
-        if (window.commandHistoryIndex <= window.commandHistory.length) {
+        if (window.commandHistoryIndex < window.commandHistory.length) {
           window.commandHistoryIndex++;
         }
 
