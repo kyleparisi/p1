@@ -1,6 +1,7 @@
 var file = require('./file'),
     clear = require('./clear'),
-    h = require('hyperscript');
+    h = require('hyperscript'),
+    rateLimit = require('./rateLimit');
 
 var robot = function(input, keyCode) {
 
@@ -8,7 +9,7 @@ var robot = function(input, keyCode) {
     card: function(card) {
       var card = h('.card', card);
       var list = document.body.getElementsByClassName('list');
-      console.log(list.length);
+
       list[list.length - 1].appendChild(card);
     },
     hear: function(exp, cb) {
@@ -30,4 +31,4 @@ var robot = function(input, keyCode) {
 
 }
 
-module.exports = robot;
+module.exports = rateLimit(robot, 100);

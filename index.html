@@ -24,41 +24,16 @@
         </div>
 
         <script>
-          // Returns a function, that, as long as it continues to be invoked, will not
-          // be triggered. The function will be called after it stops being called for
-          // N milliseconds. If `immediate` is passed, trigger the function on the
-          // leading edge, instead of the trailing.
-          function debounce(func, wait, immediate) {
-            var timeout;
-            return function() {
-              var context = this, args = arguments;
-              var later = function() {
-                timeout = null;
-                if (!immediate) func.apply(context, args);
-              };
-              var callNow = immediate && !timeout;
-              clearTimeout(timeout);
-              timeout = setTimeout(later, wait);
-              if (callNow) func.apply(context, args);
-            };
-          };
+
         </script>
 
         <!-- base function -->
         <script>
           require('./src/history')();
           var robot = require('./src/robot');
-          var rateLimitedBot = debounce(function(value, keyCode) {
-            robot(value, keyCode);
-          }, 100);
           function input(el, event) {
-            rateLimitedBot(el.value, event.keyCode);
+            robot(el.value, event.keyCode);
           }
-        </script>
-
-        <!-- base cards -->
-        <script>
-
         </script>
 
     </body>

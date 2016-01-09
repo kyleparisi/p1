@@ -8,6 +8,8 @@ module.exports = function (user) {
     window.myCodeMirror = undefined;
     document.getElementById('userInput').value = '';
     document.body.getElementsByClassName('list')[0].innerHTML = '';
+    document.body.getElementsByClassName('notification')[0].innerHTML = '';
+    console.clear();
   });
 
 }
