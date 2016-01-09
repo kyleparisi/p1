@@ -21,11 +21,13 @@ module.exports = function (robot) {
     // visuals - need to refactor this
     var cardList = document.body.getElementsByClassName('list')[0];
     var notification = document.body.getElementsByClassName('notification')[0];
+
     promise.then(function(data) {
       window.commandHistory.push(data.command);
       window.commandHistoryIndex = window.commandHistory.length;
       notification.innerHTML = '';
-      codemirror(cardList, data.data);
+
+      codemirror(robot, data.data);
 
     }).catch(function(err) {
       if (err.code === 'ENOENT') {

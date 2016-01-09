@@ -14,7 +14,7 @@
 
         <div id="app">
           <div class="prompt">></div>
-          <input id="userInput" type="text" placeholder="Type your commands here..." autofocus="true" oninput="debounce(input(this), 250)" onkeyup="keyed(event)">
+          <input id="userInput" type="text" placeholder="Type your commands here..." autofocus="true" onkeyup="input(this, event)">
           <span class="notification"></span>
         </div>
         <div class="conversation">
@@ -44,22 +44,15 @@
           };
         </script>
 
-        <!-- base keyed function -->
-        <script>
-          function keyed(event) {
-            var userInput = document.getElementById('userInput').value;
-            var robot = require('./src/robot');
-            robot(userInput, event.keyCode);
-          }
-        </script>
-
-
         <!-- base function -->
         <script>
           require('./src/history')();
           var robot = require('./src/robot');
-          function input(el) {
-            robot(el.value);
+          var rateLimitedBot = debounce(function(value, keyCode) {
+            robot(value, keyCode);
+          }, 100);
+          function input(el, event) {
+            rateLimitedBot(el.value, event.keyCode);
           }
         </script>
 

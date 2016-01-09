@@ -7,7 +7,7 @@ module.exports = function (user) {
     window.commandHistoryIndex = window.commandHistory.length;
     window.myCodeMirror = undefined;
     document.getElementById('userInput').value = '';
-    document.body.getElementsByClassName('conversation')[0].innerHTML = '';
+    document.body.getElementsByClassName('list')[0].innerHTML = '';
   });
 
 }
