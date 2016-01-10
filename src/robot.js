@@ -12,9 +12,9 @@ var robot = function(input, keyCode) {
 
       list[list.length - 1].appendChild(card);
     },
-    hear: function(exp, cb) {
+    hear: function(exp, key, cb) {
       this.message = exp.exec(input);
-      if (this.message !== null) {
+      if (this.message !== null && keyCode === key) {
         cb(this);
       }
     }

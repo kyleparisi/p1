@@ -1,5 +1,6 @@
 var fs = require('fs'),
-    codemirror = require('./cards/codemirror');
+    codemirror = require('./cards/codemirror'),
+    KEY = require('./constants');
 
 function file(command, aFile) {
   return new Promise(function(resolve, reject) {
@@ -13,7 +14,7 @@ function file(command, aFile) {
 
 module.exports = function (robot) {
 
-  robot.hear(/file (.*)/, function(robot) {
+  robot.hear(/file (.*)/, KEY.ENTER, function(robot) {
     // only accpets 1 file for right now
     var filePath = robot.message[1];
     var promise = file(robot.message[0], filePath);
