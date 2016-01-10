@@ -1,40 +1,40 @@
-// HISTORY
-module.exports = function() {
-  window.commandHistory = [''];
-  window.commandHistoryIndex = 0;
-  document.addEventListener('keydown', function(event) {
-    const UP = 38;
-    const LEFT = 37;
-    const RIGHT = 39;
-    const DOWN = 40;
-    var userInput = document.getElementById('userInput');
+var base_model = {
+  pointer: 1,
+  commandList: ['']
+};
 
-      if(event.keyCode == LEFT) {
-        console.log('Left was pressed');
-      }
+var model = base_model;
 
-      if(event.keyCode == RIGHT) {
-        console.log('Right was pressed');
-      }
-      // console.log(window.commandHistoryIndex);
-      if (event.keyCode == UP) {
-        if (window.commandHistoryIndex > 0) {
-          window.commandHistoryIndex--;
-        }
-        userInput.value = window.commandHistory[window.commandHistoryIndex];
-      }
+var controller = {
+  read: function () {
+    return model.commandList;
+  },
+  add: function (command) {
+    model.commandList.push(command);
+    model.pointer = model.commandList.length;
+  },
+  down: function () {
+    if (model.pointer < model.commandList.length) {
+      model.pointer++;
+    }
+    if (model.commandList[model.pointer] !== undefined) {
+      return model.commandList[model.pointer];
+    }
 
-      if (event.keyCode == DOWN) {
-        if (window.commandHistoryIndex < window.commandHistory.length) {
-          window.commandHistoryIndex++;
-        }
-
-        if (window.commandHistory[window.commandHistoryIndex] !== undefined) {
-          userInput.value = window.commandHistory[window.commandHistoryIndex];
-        } else {
-          userInput.value = '';
-        }
-
-      }
-  });
+    return '';
+  },
+  up: function () {
+    if (model.pointer > 0) {
+      model.pointer--;
+    }
+    return model.commandList[model.pointer];
+  },
+  clear: function () {
+    model = base_model;
+  },
+  current: function () {
+    return model.commandList[model.pointer];
+  }
 }
+
+module.exports = controller;

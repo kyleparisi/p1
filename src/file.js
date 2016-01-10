@@ -24,8 +24,7 @@ module.exports = function (robot) {
     var notification = document.body.getElementsByClassName('notification')[0];
 
     promise.then(function(data) {
-      window.commandHistory.push(data.command);
-      window.commandHistoryIndex = window.commandHistory.length;
+      robot.commandHistory.add(data.command);
       notification.innerHTML = '';
 
       codemirror(robot, data.data);

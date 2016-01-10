@@ -29,10 +29,9 @@
 
         <!-- base function -->
         <script>
-          require('./src/history')();
           var robot = require('./src/robot');
           function input(el, event) {
-            robot(el.value, event.keyCode);
+            robot(el, event.keyCode);
           }
         </script>
 

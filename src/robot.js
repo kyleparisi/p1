@@ -1,7 +1,9 @@
 var file = require('./file'),
     clear = require('./clear'),
     h = require('hyperscript'),
-    rateLimit = require('./rateLimit');
+    rateLimit = require('./rateLimit'),
+    commandHistory = require('./history'),
+    arrows = require('./arrows');
 
 var robot = function(input, keyCode) {
 
@@ -13,21 +15,43 @@ var robot = function(input, keyCode) {
       list[list.length - 1].appendChild(card);
     },
     hear: function(exp, key, cb) {
-      this.message = exp.exec(input);
+      this.message = exp.exec(input.value);
       if (this.message !== null && keyCode === key) {
         cb(this);
       }
-    }
+    },
+    commandHistory: commandHistory
   });
 
   clear({
     pressed: function(exp, key, cb) {
-      this.message = exp.exec(input);
+      this.message = exp.exec(input.value);
       if (this.message !== null && keyCode === key) {
         cb(this);
       }
-    }
+    },
+    commandHistory: commandHistory
   });
+
+  // history({
+  //   hear: function(exp, cb) {
+  //     this.message = exp.exec(input);
+  //     if (this.message !== null) {
+  //       cb(this);
+  //     }
+  //   }
+  // });
+
+  arrows({
+    input: input,
+    pressed: function(exp, key, cb) {
+      this.message = exp.exec(input.value);
+      if (this.message !== null && keyCode === key) {
+        cb(this);
+      }
+    },
+    commandHistory: commandHistory
+  })
 
 }
 
