@@ -3,17 +3,14 @@ var file = require('./file'),
     h = require('hyperscript'),
     rateLimit = require('./rateLimit'),
     commandHistory = require('./history'),
-    arrows = require('./arrows');
+    arrows = require('./arrows'),
+    cardManager = require('./CardManager');
 
 var robot = function(input, keyCode) {
 
   file({
-    card: function(card) {
-      var card = h('.card', card);
-      var list = document.body.getElementsByClassName('list');
-
-      list[0].insertBefore(card, list[0].firstChild);
-
+    card: function(type, content) {
+      cardManager(type, content);
     },
     hear: function(exp, key, cb) {
       this.message = exp.exec(input.value);

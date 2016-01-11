@@ -1,5 +1,5 @@
 var fs = require('fs'),
-    codemirror = require('./cards/codemirror'),
+    codemirror = require('./codemirror'),
     KEY = require('./constants');
 
 function file(command, aFile) {
