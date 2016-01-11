@@ -1,6 +1,5 @@
 var file = require('./file'),
     clear = require('./clear'),
-    h = require('hyperscript'),
     rateLimit = require('./rateLimit'),
     commandHistory = require('./history'),
     arrows = require('./arrows'),
@@ -10,9 +9,8 @@ var robot = function(input, keyCode) {
 
   file({
     notification: document.body.getElementsByClassName('notification')[0],
-    card: function(type, content) {
-      cardManager(type, content);
-    },
+    list: document.body.getElementsByClassName('list')[0],
+    card: cardManager,
     hear: function(exp, key, cb) {
       this.message = exp.exec(input.value);
       if (this.message !== null && keyCode === key) {
@@ -23,7 +21,9 @@ var robot = function(input, keyCode) {
   });
 
   clear({
+    input: input,
     notification: document.body.getElementsByClassName('notification')[0],
+    list: document.body.getElementsByClassName('list')[0],
     pressed: function(exp, key, cb) {
       this.message = exp.exec(input.value);
       if (this.message !== null && keyCode === key) {
@@ -32,15 +32,6 @@ var robot = function(input, keyCode) {
     },
     commandHistory: commandHistory
   });
-
-  // history({
-  //   hear: function(exp, cb) {
-  //     this.message = exp.exec(input);
-  //     if (this.message !== null) {
-  //       cb(this);
-  //     }
-  //   }
-  // });
 
   arrows({
     input: input,
