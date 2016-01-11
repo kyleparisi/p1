@@ -9,6 +9,7 @@ var file = require('./file'),
 var robot = function(input, keyCode) {
 
   file({
+    notification: document.body.getElementsByClassName('notification')[0],
     card: function(type, content) {
       cardManager(type, content);
     },
@@ -22,6 +23,7 @@ var robot = function(input, keyCode) {
   });
 
   clear({
+    notification: document.body.getElementsByClassName('notification')[0],
     pressed: function(exp, key, cb) {
       this.message = exp.exec(input.value);
       if (this.message !== null && keyCode === key) {
