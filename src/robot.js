@@ -12,7 +12,8 @@ var robot = function(input, keyCode) {
       var card = h('.card', card);
       var list = document.body.getElementsByClassName('list');
 
-      list[list.length - 1].appendChild(card);
+      list[0].insertBefore(card, list[0].firstChild);
+
     },
     hear: function(exp, key, cb) {
       this.message = exp.exec(input.value);
