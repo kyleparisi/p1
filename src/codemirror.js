@@ -9,6 +9,7 @@ var options = {
 module.exports = function (robot, data) {
 
   CodeMirror(function (el) {
+    console.log(el);
     robot.card(options.card, el);
   }, {
     value: data,

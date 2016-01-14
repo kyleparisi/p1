@@ -4,6 +4,7 @@
   "main": "main.js",
   "dependencies": {
     "codemirror": "^5.10.0",
-    "hyperscript": "^1.4.7"
+    "hyperscript": "^1.4.7",
+    "virtual-dom": "^2.1.1"
   }
 }
